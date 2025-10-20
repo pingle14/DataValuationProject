@@ -210,11 +210,7 @@ def experiment(
                 model.current_params = estimated_coeffs
 
                 "Tracks the literall difference between estimated and true coefficients. Ex. [0.5 0.8] - [0 1]"
-                current_param_diffs[algo].append(
-                    estimated_coeffs
-                    - true_coeff
-                    # jnp.absolute(estimated_coeffs - true_coeff)
-                )
+                current_param_diffs[algo].append(estimated_coeffs - true_coeff)
 
         "data"
         for algo in models:

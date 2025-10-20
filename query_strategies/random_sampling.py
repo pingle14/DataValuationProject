@@ -4,6 +4,10 @@ from query_strategies.strategy import Strategy
 
 
 class RandomSampling(Strategy):
+    """
+    This is the strategy for random sampling (passive learning)
+    """
+
     def __init__(
         self,
         model_inference_fn,

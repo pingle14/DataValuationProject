@@ -5,6 +5,11 @@ from query_strategies.strategy import Strategy
 
 
 class AdjustedFisher(Strategy):
+    """
+    This is our proposed data valuation strategy that is based on an
+    adjusted fisher information metric (further described in the paper)
+    """
+
     def __init__(
         self,
         model_inference_fn,
@@ -61,7 +66,6 @@ class AdjustedFisher(Strategy):
         trace = True
         Xres = X - jnp.mean(self.labeled_X, axis=0)
         variance = self.estimate_variance(
-            # NOTE: HYP 1: jnp.asarray([0 if i == 0 else 1 for i in range(len(self.current_params))]),
             self.current_params,
             self.labeled_y,
             self.labeled_X,

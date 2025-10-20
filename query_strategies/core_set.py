@@ -4,7 +4,6 @@ from query_strategies.strategy import Strategy
 from datetime import datetime
 
 
-# from sklearn.metrics import pairwise_distances
 def pairwise_distances(X, Y):
     # Squared Euclidean distances
     XX = jnp.sum(X**2, axis=1, keepdims=True)
@@ -35,12 +34,16 @@ def update_nearest_cent(pt, current_dist, new_cent):
     return jnp.min(jnp.array([current_dist, new_dist]))
 
 
-##################################################################
-#                       CORE SET ALGO
-# - Equivalent to minmax facility
-# - GOAL: Choose b centers s.t. minmize max dist(pt, nearest center)
-##################################################################
 class CoreSet(Strategy):
+    """
+    This is an implementation of the CoreSet strategy
+    """
+
+    ##################################################################
+    #                       CORE SET ALGO
+    # - Equivalent to minmax facility
+    # - GOAL: Choose b centers s.t. minmize max dist(pt, nearest center)
+    ##################################################################
     def __init__(
         self,
         model_inference_fn,

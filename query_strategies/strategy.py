@@ -32,23 +32,11 @@ def estimate_variance(residual):
     # unweighted estimator of variance
     return jnp.sum(residual**2) / (len(residual) - 1)  # SSE
 
-    # # Compute the weights
-    # weights = jnp.ones_like(residual)
-    # # 2nd moment = E[(x - mu)^2] = sigma^2 + sigma_e^2
-    # # sigma^2 = 1/n sum ((x - x-bar)^2) - sigma_e^2
-    # A = jnp.sum(weights) / (jnp.sum(weights) ** 2 - jnp.sum(weights**2))
-
-    # # Compute the weighted measurements
-    # error_diff = residual**2 # MSE
-    # weighted_measurements = weights * (error_diff)
-
-    # # Compute the variance estimator
-    # variance_estimator = A * jnp.sum(weighted_measurements)
-
-    # return variance_estimator
-
 
 class Strategy(ABC):
+    """
+    This is the base class for different strategies we use in our experiments
+    """
 
     def __init__(
         self,
@@ -123,8 +111,6 @@ class Strategy(ABC):
         for i in range(self.iter):
             # Generate pool
             self.choose_sample_generative(key=step_keys[i])
-
-            # self.choose_sample(key=step_keys[i])
             estimated_coeffs = self.model_training_fn(self.labeled_X, self.labeled_y)
 
             self.current_params = estimated_coeffs

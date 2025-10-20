@@ -4,6 +4,10 @@ from query_strategies.strategy import Strategy
 
 
 class BAIT(Strategy):
+    """
+    This is our implementation of the BAIT strategy from the BAIT paper
+    """
+
     def __init__(
         self,
         model_inference_fn,

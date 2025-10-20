@@ -2,6 +2,12 @@ import jax.numpy as jnp
 from jax import random
 
 
+"""
+These utilities generate pools of data. We use these utilities in our 
+experiments to generate pools of data each iteration in a streaming setup.
+"""
+
+
 def generate_data(
     linearity_percentage,
     sample_size,
