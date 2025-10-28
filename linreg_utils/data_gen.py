@@ -9,7 +9,6 @@ experiments to generate pools of data each iteration in a streaming setup.
 
 
 def generate_data(
-    linearity_percentage,
     sample_size,
     key=random.PRNGKey(9355442),
     covariate_size=5,
@@ -42,13 +41,7 @@ def generate_data(
 
     # compute outcome
     linear_component = jnp.matmul(X, coeff)
-    nonlinear_component = jnp.exp(jnp.matmul(X, coeff))
-    y = (
-        (linearity_percentage * linear_component)
-        + ((1 - linearity_percentage) * nonlinear_component)
-        + epsilon
-        + epsilon_error
-    )
+    y = linear_component + epsilon + epsilon_error
 
     return X, y, error, coeff
 

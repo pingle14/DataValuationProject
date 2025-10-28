@@ -47,7 +47,6 @@ def gainRatio(
     budget=1,
     iter_per_algo=10,
     measurement_error=False,
-    linearity_percentage=1.0,
 ):
     true_coeff = np.asarray([0 if i == 0 else 1 for i in range(num_coeffs)])
     step_keys = random.split(random.PRNGKey(0), 1)
@@ -85,7 +84,6 @@ def gainRatio(
     for iter in tqdm(range(iter_per_algo)):
         "Generate Data"
         X, y, error, _ = generate_data(
-            linearity_percentage=linearity_percentage,
             sample_size=initial_sample_sz if iter == 0 else pool_sz,
             coeff=true_coeff,
             key=iter_step_keys[iter],
@@ -116,7 +114,7 @@ def gainRatio(
         mini_df.rename(columns={"index": "Iteration"}, inplace=True)
         df = pd.concat([df, mini_df])
     df.to_csv(
-        f"data/variancesDf_linearity{linearity_percentage}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n1_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
+        f"data/variancesDf_linearity{1.0}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n1_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
         index=False,
     )
 
@@ -129,7 +127,6 @@ def experiment(
     budget=10,
     iter_per_algo=10,
     measurement_error=False,
-    linearity_percentage=1.0,
 ):
     if num_rounds <= 1:
         gainRatio(
@@ -139,7 +136,7 @@ def experiment(
             budget,
             iter_per_algo,
             measurement_error,
-            linearity_percentage,
+            1.0,
         )
         return
     true_coeff = np.asarray([0 if i == 0 else 1 for i in range(num_coeffs)])
@@ -186,7 +183,6 @@ def experiment(
         for iter in range(iter_per_algo):
             "Generate Data"
             X, y, error, _ = generate_data(
-                linearity_percentage=linearity_percentage,
                 sample_size=initial_sample_sz if iter == 0 else pool_sz,
                 coeff=true_coeff,
                 key=iter_step_keys[iter],
@@ -226,7 +222,7 @@ def experiment(
     for algo in param_diffs:
         param_diffs_df = pd.concat(param_diffs[algo], axis=0)
         param_diffs_df.to_csv(
-            f"data/CORRECTED{algo}_param_diff_linearity{linearity_percentage}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n{num_rounds}_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
+            f"data/{algo}_param_diff_linearity{1.0}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n{num_rounds}_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
             index=False,
         )
 
@@ -238,7 +234,6 @@ def multivar_experiment(
     budget=1,
     iter_per_algo=1000,
     measurement_error=False,
-    linearity_percentage=1.0,
 ):
     true_coeff = np.asarray([0 if i == 0 else 1 for i in range(num_coeffs)])
     step_keys = random.split(random.PRNGKey(0), 1)
@@ -279,8 +274,6 @@ def multivar_experiment(
     models = {
         f"Our Approach (Pool Size = {pool_sz}, Budget = {budget})": adj_fisher_model,
         f"Our Approach (Pool Size = {pool_sz}, Budget = {budget * 10})": big_budget,
-        # "BAIT": bait_model,
-        # "CoreSet": core_set_model,
         "Random": rand_model,
     }
 
@@ -288,7 +281,6 @@ def multivar_experiment(
     for iter in tqdm(range(iter_per_algo)):
         "Generate Data"
         X, y, error, _ = generate_data(
-            linearity_percentage=linearity_percentage,
             sample_size=initial_sample_sz if iter == 0 else pool_sz,
             coeff=true_coeff,
             key=iter_step_keys[iter],
@@ -315,7 +307,6 @@ def multivar_experiment(
     for iter in tqdm(range(iter_per_algo)):
         "Generate Data"
         X, y, error, _ = generate_data(
-            linearity_percentage=linearity_percentage,
             sample_size=initial_sample_sz if iter == 0 else big_pool.pool_sz,
             coeff=true_coeff,
             key=iter_step_keys[iter],
@@ -349,7 +340,7 @@ def multivar_experiment(
         mini_df.rename(columns={"index": "Iteration"}, inplace=True)
         df = pd.concat([df, mini_df])
     df.to_csv(
-        f"data/multiVar_linearity{linearity_percentage}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n1_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
+        f"data/multiVar_linearity{1.0}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n1_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
         index=False,
     )
 
@@ -373,15 +364,6 @@ def percentage_type(value):
 
 
 parser = argparse.ArgumentParser(prog="BenchMark", description="Benchamarks stuff")
-parser.add_argument(
-    "-l",
-    "--linearityPercentage",
-    action="store",
-    type=percentage_type,
-    help="Specify the linearity percentage between 0 and 1.",
-    default=1.0,
-    required=False,
-)
 parser.add_argument(
     "-n",
     "--numRounds",
@@ -463,24 +445,25 @@ budget = int(args["budget"])
 iter_per_algo = int(args["itersPerRound"])
 verbose = bool(args["verbose"])
 measurement_err = bool(args["measurement_error"])
-linearity_percentage = float(args["linearityPercentage"])
+
 
 if verbose:
     print("*" * 42)
     print("*" + " " * 10 + f"Benching with args: {args}")
     print("*" * 42)
 
-# experiment(
-#     num_rounds=num_rounds,
-#     num_coeffs=num_coeffs,
-#     initial_sample_sz=initial_sample_sz,
-#     pool_sz=pool_sz,
-#     budget=budget,
-#     iter_per_algo=iter_per_algo,
-#     measurement_error=measurement_err,
-#     linearity_percentage=linearity_percentage,
-# )
+# ------------ EXPERIMENT TO RUN MULTIPLE REALIZATIONS -------------
+experiment(
+    num_rounds=num_rounds,
+    num_coeffs=num_coeffs,
+    initial_sample_sz=initial_sample_sz,
+    pool_sz=pool_sz,
+    budget=budget,
+    iter_per_algo=iter_per_algo,
+    measurement_error=measurement_err,
+)
 
+# ------------ EXPERIMENT TO RUN MULTI-VAR -------------
 multivar_experiment(num_coeffs=num_coeffs, measurement_error=measurement_err)
 
 if verbose:
