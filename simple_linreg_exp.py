@@ -453,15 +453,15 @@ if verbose:
     print("*" * 42)
 
 # ------------ EXPERIMENT TO RUN MULTIPLE REALIZATIONS -------------
-experiment(
-    num_rounds=num_rounds,
-    num_coeffs=num_coeffs,
-    initial_sample_sz=initial_sample_sz,
-    pool_sz=pool_sz,
-    budget=budget,
-    iter_per_algo=iter_per_algo,
-    measurement_error=measurement_err,
-)
+# experiment(
+#     num_rounds=num_rounds,
+#     num_coeffs=num_coeffs,
+#     initial_sample_sz=initial_sample_sz,
+#     pool_sz=pool_sz,
+#     budget=budget,
+#     iter_per_algo=iter_per_algo,
+#     measurement_error=measurement_err,
+# )
 
 # ------------ EXPERIMENT TO RUN MULTI-VAR -------------
 multivar_experiment(num_coeffs=num_coeffs, measurement_error=measurement_err)
