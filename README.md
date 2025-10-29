@@ -11,12 +11,29 @@
 -p := pool_sz (default = 1000)
 -b := budget (default = 10)
 -i := iter_per_algo (default = 10)
--l := long_experiment (default = false)
+-v := verbose mode (default = false)
+-m := flag to turn on measurement error (default=false)
+```
+Example run command:
+```
+python3 simple_linreg_exp.py -n 1000 -c 2 -b 1 -p 1000 -i 25
+```
+
+> `logreg_experiment.py` recreates our results for the logistic regression experiement.
+Example run command:
+```
+python3 logreg_experiment.py
+```
+
+> `multivar-exp.py` is the experiment for multiple linear regression. Specify parameters as follows:
+```
+-c := num_coeffs (default = 5)
+-m := flag to turn on measurement error (default=false)
 -v := verbose mode (default = false)
 ```
 Example run command:
 ```
-python3 simple_linreg_exp.py -n 1000 -c 2 -b 1 -p 1000
+python3 multivar-exp.py -c 5
 ```
 ---
 
