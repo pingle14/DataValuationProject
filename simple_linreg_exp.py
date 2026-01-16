@@ -108,7 +108,7 @@ def experiment(
     for algo in param_diffs:
         param_diffs_df = pd.concat(param_diffs[algo], axis=0)
         param_diffs_df.to_csv(
-            f"data/{algo}_param_diff_linearity{1.0}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n{num_rounds}_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
+            f"data/{algo}_param_diff_s{initial_sample_sz}_b{budget}_p{pool_sz}_n{num_rounds}_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
             index=False,
         )
 

@@ -125,7 +125,7 @@ def multivar_experiment(
         mini_df.rename(columns={"index": "Iteration"}, inplace=True)
         df = pd.concat([df, mini_df])
     df.to_csv(
-        f"data/multiVar_linearity{1.0}_s{initial_sample_sz}_b{budget}_p{pool_sz}_n1_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
+        f"data/multiVar_s{initial_sample_sz}_b{budget}_p{pool_sz}_n1_i{iter_per_algo}_c{num_coeffs}_m{measurement_error}.csv",
         index=False,
     )
 
