@@ -1,11 +1,10 @@
-junk.py
-*data*
+*junk*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 *.DS_Store
-data/
+old-data/
 linearizerExp/
 
 # C extensions
